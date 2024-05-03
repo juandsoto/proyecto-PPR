@@ -6,11 +6,50 @@
 		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Proyecto | PPR</title>
+		<script src="https://cdn.jsdelivr.net/npm/minizinc/dist/minizinc.js"></script>
 	</head>
 
 	<body>
 		<div id="root"></div>
 		<script type="module" src="/src/main.jsx"></script>
+		<script type="module">
+			import { Model } from 'https://cdn.jsdelivr.net/npm/minizinc/dist/minizinc.mjs';
+
+			function readModel(data) {
+
+				const model = new MiniZinc.Model();
+
+				model.addDznString(data);
+				model.addFile('model.mzn', MODEL);
+
+				return model;
+			}
+
+			function solveModel(model) {
+				return model.solve({
+					options: {
+						solver: 'coin-bc',
+						'all-solutions': true,
+					}
+				});
+			}
+
+			async function execute(data) {
+				await MiniZinc.init();
+				let model;
+				let solution;
+				try {
+					model = await readModel(data);
+					solution = await solveModel(model);
+
+				} catch (e) {
+					console.error(e);
+				}
+				console.log({ solution });
+
+				return solution.result?.solution?.output.json;
+			}
+		</script>
 	</body>
 
 </html>
