@@ -1,0 +1,9 @@
+ACTORES = { Actor1 , Actor2 , Actor3 };
+
+Escenas =
+[| 1 , 0 , 1 , 10
+| 1 , 0 , 1 , 20
+| 0 , 1 , 0 , 5|];
+
+Duracion =
+[ 2 , 3 , 4 ];
