@@ -1,0 +1,15 @@
+ACTORES = { Actor1 , Actor2 , Actor3 , Actor4, Actor5 };
+
+Escenas =
+[| 1 , 0 , 1 , 1 , 1 , 10
+| 1 , 1 , 0 , 0 , 1  , 20
+| 0 , 1 , 1 , 0 , 1  , 5
+| 1 , 0 , 0 , 1 , 0  , 2
+| 1 , 1 , 0 , 1 , 0  , 4|];
+
+Duracion =
+[ 2 , 3 , 1 , 2, 5 ];
+
+Maximo_tiempo_actores = [0 , 0 , 0 , 0, 0];
+
+Actores_separados = [|3,2|];
