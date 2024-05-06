@@ -12,3 +12,7 @@ Duracion =
 Maximo_tiempo_actores = [5 , 5 , 4 , 4];
 
 Actores_separados = [];
+
+c_weight = 90;
+
+t_weight = 10;

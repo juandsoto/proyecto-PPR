@@ -22,6 +22,10 @@ array[1..length(ACTORES)] of 0..sum(Duracion): Maximo_tiempo_actores;
 % Vector que muestra cuales actores deben estar separados en lo posible, debido a que juntos no trabajan tan bien.
 array[int,int] of 1..length(ACTORES): Actores_separados;
 
+% Estos son los pesos que se le asignan al costo y tiempo en que algunos actores no deberían estar juntos.
+0..100: c_weight;
+0..100: t_weight;
+
 % ====================================================================================================================
 % Variables
 % ====================================================================================================================
@@ -148,8 +152,8 @@ constraint costo_por_actor = [calcular_costo(a) | a in 1..length(ACTORES)];
 var int: tiempo_juntos_total = sum(tiempo_juntos);
 
 % solve minimize costo;
-solve minimize costo + tiempo_juntos_total;
-
+% solve minimize tiempo_juntos_total;
+solve minimize costo * c_weight + tiempo_juntos_total * t_weight;
 % solve satisfy;
 
 % ====================================================================================================================
