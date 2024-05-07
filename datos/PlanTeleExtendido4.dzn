@@ -17,6 +17,6 @@ Maximo_tiempo_actores = [0 , 0 , 0 , 0 , 0 , 0 , 0 , 0];
 
 Actores_separados = [| 1 , 2 | 3 , 5 | 4, 7 | 8, 1 |];
 
-c_weight = 100;
+c_weight = 1;
 
-t_weight = 10;
+t_weight = 1;

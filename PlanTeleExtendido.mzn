@@ -23,6 +23,8 @@ array[1..length(ACTORES)] of 0..sum(Duracion): Maximo_tiempo_actores;
 array[int,int] of 1..length(ACTORES): Actores_separados;
 
 % Estos son los pesos que se le asignan al costo y tiempo en que algunos actores no deberían estar juntos.
+% c_weight -> este es el peso que se le da al costo
+% t_weight -> este es el peso que se le da al tiempo que comparten los actores que no trabajan bien juntos.
 0..100: c_weight;
 0..100: t_weight;
 
