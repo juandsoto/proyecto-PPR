@@ -21,7 +21,7 @@ array[1..CANTIDAD_ESCENAS] of int: Duracion;
 int: CANTIDAD_ESCENAS = (length(Escenas) div length(ACTORES)) - 1;
 
 % Vector que revela el orden en que se deben mostrar las escenas
-array[1..CANTIDAD_ESCENAS] of var 1..CANTIDAD_ESCENAS: orden_escenas; %= [i | i in 1..CANTIDAD_ESCENAS];
+array[1..CANTIDAD_ESCENAS] of var 1..CANTIDAD_ESCENAS: orden_escenas;
 
 % ====================================================================================================================
 % Restricciones
@@ -111,13 +111,26 @@ array[1..length(ACTORES)] of var int: costo_por_actor;
 % Restringe el array costo_por_actor para que contenga los costos individuales de cada actor, calculados mediante la función calcular_costo(a).
 constraint costo_por_actor = [calcular_costo(a) | a in 1..length(ACTORES)];
 
+% Estas restricciones sirven para mostrar la informacion en la interfaz
+array[1..length(ACTORES)] of var ACTORES: actores;
+array[1..CANTIDAD_ESCENAS] of var int: duracion;
+array[1..length(ACTORES)] of var int: costo_hora;
+array[1..length(ACTORES), 1..CANTIDAD_ESCENAS] of var int: escenas;
+
+constraint actores = [a | a in ACTORES];
+constraint duracion = [d | d in Duracion];
+constraint costo_hora = [Escenas[a,CANTIDAD_ESCENAS+1] | a in 1..length(ACTORES)];
+constraint forall(i in 1..length(ACTORES), j in 1..CANTIDAD_ESCENAS) (
+  escenas[i,j] = Escenas[i,j]
+);
+
 % ====================================================================================================================
 % Estrategia de búsqueda
 % ====================================================================================================================
 
-% solve minimize costo;
+solve minimize costo;
 
-solve satisfy;
+%solve satisfy;
 
 % ====================================================================================================================
 % Salida
