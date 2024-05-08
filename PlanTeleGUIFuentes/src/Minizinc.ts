@@ -1,6 +1,14 @@
 import * as MiniZinc from 'minizinc';
 import { MODEL } from './constants/model';
 
+MiniZinc.init({
+	workerURL: 'http://localhost:5173/node_modules/minizinc/dist/minizinc-worker.js',
+	wasmURL: 'http://localhost:5173/node_modules/minizinc/dist/minizinc.wasm',
+	dataURL: 'http://localhost:5173/node_modules/minizinc/dist/minizinc.data'
+}).then(() => {
+	console.log('Ready');
+});
+
 function readModel(data: string) {
 
 	const model = new MiniZinc.Model();
@@ -20,20 +28,19 @@ function solveModel(model: MiniZinc.Model) {
 	});
 }
 
-async function run(data: string) {
-	await MiniZinc.init();
+async function run(data: string): Promise<any | null> {
 	let model: MiniZinc.Model;
-	let solution;
+	let result: Awaited<MiniZinc.SolveProgress>;
 	try {
 		model = await readModel(data);
-		solution = await solveModel(model);
+		result = await solveModel(model);
+		console.log(result.solution?.output.json);
 
+		return result.solution?.output.json;
 	} catch (e) {
 		console.error(e);
 	}
-	console.log({ solution });
-
-	return solution.result?.solution?.output.json;
+	return null;
 }
 
 export const Minizinc = {

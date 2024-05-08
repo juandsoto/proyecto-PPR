@@ -2,16 +2,23 @@ import React, { useState } from 'react';
 import UploadDzn from './UploadDzn';
 import { Button, Select } from './ui';
 import { useAppStore } from '../store/appStore';
+import { Minizinc } from '../Minizinc';
 
 function Sidebar() {
-	const { dznFile } = useAppStore();
+	const { dznFile, setBasicResult } = useAppStore();
 	const [model, setModel] = useState<'basic' | 'extended'>('basic');
 
 	const runModel = async () => {
 		if (!dznFile) return;
 
 		const data: string = await dznFile?.text();
-		// if (model === 'basic') return execute(data);
+		console.log(data);
+
+		if (model === 'basic') {
+			const result = await Minizinc.run(data);
+			setBasicResult(result);
+			return;
+		}
 
 		return alert('no implementado');
 	};

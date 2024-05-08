@@ -6,10 +6,13 @@ function UploadDzn() {
 	const { setDznFile } = useAppStore();
 
 	return (
-		<FileInput
-			title='Ingresa los datos de entrada'
-			handleFile={ setDznFile }
-		/>
+		<>
+			<label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="dzn_input">Ingresa los datos de entrada</label>
+			<FileInput
+				id='dzn_input'
+				handleFile={ setDznFile }
+			/>
+		</>
 	);
 }
 

@@ -21,7 +21,7 @@ array[1..CANTIDAD_ESCENAS] of int: Duracion;
 int: CANTIDAD_ESCENAS = (length(Escenas) div length(ACTORES)) - 1;
 
 % Vector que revela el orden en que se deben mostrar las escenas
-array[1..CANTIDAD_ESCENAS] of var 1..CANTIDAD_ESCENAS: orden_escenas; %= [i | i in 1..CANTIDAD_ESCENAS];
+array[1..CANTIDAD_ESCENAS] of var 1..CANTIDAD_ESCENAS: orden_escenas;
 
 % Representa el costo total de la producción, calculado como la suma de los costos individuales de cada actor. En otras palabras, este es el costo de la solución.
 var int: costo;
@@ -121,6 +121,19 @@ solve minimize costo;
 % ====================================================================================================================
 % Salida
 % ====================================================================================================================
+
+% Estas restricciones sirven para mostrar la informacion en la interfaz
+array[1..length(ACTORES)] of var ACTORES: actores;
+array[1..CANTIDAD_ESCENAS] of var int: duracion;
+array[1..length(ACTORES)] of var int: costo_hora;
+array[1..length(ACTORES), 1..CANTIDAD_ESCENAS] of var int: escenas;
+
+constraint actores = [a | a in ACTORES];
+constraint duracion = [d | d in Duracion];
+constraint costo_hora = [Escenas[a,CANTIDAD_ESCENAS+1] | a in 1..length(ACTORES)];
+constraint forall(i in 1..length(ACTORES), j in 1..CANTIDAD_ESCENAS) (
+  escenas[i,j] = Escenas[i,j]
+);
 
 output ["ESCENAS = \(orden_escenas)" ++ "\n\n" ++ "COSTO = \(costo)" ++ "\n\n"];
 
