@@ -37,6 +37,12 @@ int: CANTIDAD_ESCENAS = (length(Escenas) div length(ACTORES)) - 1;
 % Vector que revela el orden en que se deben mostrar las escenas
 array[1..CANTIDAD_ESCENAS] of var 1..CANTIDAD_ESCENAS: orden_escenas; %= [i | i in 1..CANTIDAD_ESCENAS];
 
+% Representa el costo total de la producción, calculado como la suma de los costos individuales de cada actor. En otras palabras, este es el costo de la solución.
+var 0.0..infinity: costo;
+
+% Almacena los costos individuales de cada actor en un array. Este arreglo es útil para ver cuanto cobra en total cada actor, por ejemplo en costo_por_actor[1] está el precio que cobra el actor 1 por estar en el set durante cierto intervalo de tiempo.
+array[1..length(ACTORES)] of var int: costo_por_actor;
+
 % array que muestra el tiempo en que permanecen juntos los autores que deberían estar separados.
 array[int] of var int: tiempo_juntos = [ let { 
   % Recuperamos los indices de los actores.
@@ -75,6 +81,11 @@ constraint forall(a in 1..length(ACTORES)) (
 
 % Restricción: la suma de los indices de las escenas debe ser inferior o igual a la suma de los numeros del 1 hasta la cantidad de escenas.
 constraint sum(orden_escenas) <= sum(i in 1..CANTIDAD_ESCENAS)(i);
+
+% Restricción: los actores pueden permanecer juntos en el set en todas las escenas a lo máximo.
+constraint forall (t in 1..length(tiempo_juntos)) (
+  tiempo_juntos[t] >= 0 /\ tiempo_juntos[t] <= duracion_todas_las_escenas
+);
 
 % --------------------------------------------------------------------------------------------------------------------
 % Restricciones de simetría
@@ -135,24 +146,14 @@ function var int: calcular_costo(1..length(ACTORES): a)
 ) * Escenas[a,CANTIDAD_ESCENAS+1];
 
 % ====================================================================================================================
-% Funcion objetivo
+% Funcion objetivo y Estrategia de búsqueda
 % ====================================================================================================================
-
-% Representa el costo total de la producción, calculado como la suma de los costos individuales de cada actor. En otras palabras, este es el costo de la solución.
-var 0.0..infinity: costo;
 
 % Restringe la variable costo para que sea igual a la suma de los costos individuales de cada actor, calculados mediante la función calcular_costo(a).
 constraint costo = sum(a in 1..length(ACTORES))(calcular_costo(a));
 
-% Almacena los costos individuales de cada actor en un array. Este arreglo es útil para ver cuanto cobra en total cada actor, por ejemplo en costo_por_actor[1] está el precio que cobra el actor 1 por estar en el set durante cierto intervalo de tiempo.
-array[1..length(ACTORES)] of var int: costo_por_actor;
-
-% Restringe el array costo_por_actor para que contenga los costos individuales de cada actor, calculados mediante la función calcular_costo(a).
+% Restringe el array costo_por_actor para que contenga los costos individuales de cada actor, calculados mediante la función calcular_costo(a). 
 constraint costo_por_actor = [calcular_costo(a) | a in 1..length(ACTORES)];
-
-% ====================================================================================================================
-% Estrategia de búsqueda
-% ====================================================================================================================
 
 % El peor tiempo que pueden estar juntos 2 actores: la sumatoria de la duración de cada escena.
 int: duracion_todas_las_escenas = sum(Duracion);
@@ -163,9 +164,12 @@ int: peor_costo = sum(a in 1..length(ACTORES)) (duracion_todas_las_escenas * Esc
 % Total del tiempo en que permanecen juntos los actores que deberían estar separados.
 var int: tiempo_juntos_total = sum(tiempo_juntos);
 
+% Función objetivo:
+% ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / duracion_todas_las_escenas ) * t_weight );
+
 % solve minimize costo;
 % solve minimize tiempo_juntos_total;
-solve minimize costo/peor_costo * c_weight + tiempo_juntos_total/duracion_todas_las_escenas * t_weight;
+solve minimize ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / duracion_todas_las_escenas ) * t_weight );
 % solve satisfy;
 
 % ====================================================================================================================
