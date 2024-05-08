@@ -23,6 +23,12 @@ int: CANTIDAD_ESCENAS = (length(Escenas) div length(ACTORES)) - 1;
 % Vector que revela el orden en que se deben mostrar las escenas
 array[1..CANTIDAD_ESCENAS] of var 1..CANTIDAD_ESCENAS: orden_escenas;
 
+% Representa el costo total de la producción, calculado como la suma de los costos individuales de cada actor. En otras palabras, este es el costo de la solución.
+var int: costo;
+
+% Almacena los costos individuales de cada actor en un array. Este arreglo es útil para ver cuanto cobra en total cada actor, por ejemplo en costo_por_actor[1] está el precio que cobra el actor 1 por estar en el set durante cierto intervalo de tiempo.
+array[1..length(ACTORES)] of var int: costo_por_actor;
+
 % ====================================================================================================================
 % Restricciones
 % ====================================================================================================================
@@ -96,20 +102,25 @@ function var int: calcular_costo(1..length(ACTORES): a)
 ) * Escenas[a,CANTIDAD_ESCENAS+1];
 
 % ====================================================================================================================
-% Funcion objetivo
+% Funcion objetivo y Estrategia de búsqueda
 % ====================================================================================================================
-
-% Representa el costo total de la producción, calculado como la suma de los costos individuales de cada actor. En otras palabras, este es el costo de la solución.
-var int: costo;
 
 % Restringe la variable costo para que sea igual a la suma de los costos individuales de cada actor, calculados mediante la función calcular_costo(a).
 constraint costo = sum(a in 1..length(ACTORES))(calcular_costo(a));
 
-% Almacena los costos individuales de cada actor en un array. Este arreglo es útil para ver cuanto cobra en total cada actor, por ejemplo en costo_por_actor[1] está el precio que cobra el actor 1 por estar en el set durante cierto intervalo de tiempo.
-array[1..length(ACTORES)] of var int: costo_por_actor;
-
 % Restringe el array costo_por_actor para que contenga los costos individuales de cada actor, calculados mediante la función calcular_costo(a).
 constraint costo_por_actor = [calcular_costo(a) | a in 1..length(ACTORES)];
+
+% función objetivo:
+% sum(a in 1..length(ACTORES))(calcular_costo(a))
+
+solve minimize costo;
+
+% solve satisfy;
+
+% ====================================================================================================================
+% Salida
+% ====================================================================================================================
 
 % Estas restricciones sirven para mostrar la informacion en la interfaz
 array[1..length(ACTORES)] of var ACTORES: actores;
@@ -123,18 +134,6 @@ constraint costo_hora = [Escenas[a,CANTIDAD_ESCENAS+1] | a in 1..length(ACTORES)
 constraint forall(i in 1..length(ACTORES), j in 1..CANTIDAD_ESCENAS) (
   escenas[i,j] = Escenas[i,j]
 );
-
-% ====================================================================================================================
-% Estrategia de búsqueda
-% ====================================================================================================================
-
-solve minimize costo;
-
-%solve satisfy;
-
-% ====================================================================================================================
-% Salida
-% ====================================================================================================================
 
 output ["ESCENAS = \(orden_escenas)" ++ "\n\n" ++ "COSTO = \(costo)" ++ "\n\n"];
 
