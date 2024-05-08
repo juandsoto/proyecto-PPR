@@ -176,6 +176,19 @@ solve minimize ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total /
 % Salida
 % ====================================================================================================================
 
+% Estas restricciones sirven para mostrar la informacion en la interfaz
+array[1..length(ACTORES)] of var ACTORES: actores;
+array[1..CANTIDAD_ESCENAS] of var int: duracion;
+array[1..length(ACTORES)] of var int: costo_hora;
+array[1..length(ACTORES), 1..CANTIDAD_ESCENAS] of var int: escenas;
+
+constraint actores = [a | a in ACTORES];
+constraint duracion = [d | d in Duracion];
+constraint costo_hora = [Escenas[a,CANTIDAD_ESCENAS+1] | a in 1..length(ACTORES)];
+constraint forall(i in 1..length(ACTORES), j in 1..CANTIDAD_ESCENAS) (
+  escenas[i,j] = Escenas[i,j]
+);
+
 % Arreglo que muestra cuanto tiempo estuvieron en el set los actores.
 array[1..length(ACTORES)] of var 0..sum(Duracion): tiempo_consumido_por_actores = [
   sum(i in 1..CANTIDAD_ESCENAS where i >= primera_escena(a, orden_escenas) /\ i <= ultima_escena(a, orden_escenas) /\ Escenas[a, orden_escenas[i]] = 1)(Duracion[orden_escenas[i]]) | a in 1..length(ACTORES)
