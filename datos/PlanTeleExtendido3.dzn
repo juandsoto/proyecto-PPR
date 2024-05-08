@@ -16,6 +16,8 @@ Duracion =
 
 Maximo_tiempo_actores = [0 , 0 , 0 , 0, 0];
 
+CANTIDAD_PAREJAS = 4;
+
 Actores_separados = [|3,2|5,3|5,1|5,2|];
 
 c_weight = 1.0;

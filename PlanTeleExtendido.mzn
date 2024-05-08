@@ -25,6 +25,9 @@ array[1..CANTIDAD_ESCENAS] of 0..infinity: Duracion;
 % Si Maximo_tiempo_actores[a] > 0, entonces el actor solo tiene disponible ciertas unidades de tiempo para estar en el set.
 array[1..CANTIDAD_ACTORES] of 0..sum(Duracion): Maximo_tiempo_actores;
 
+% Número de parejas de actores que prefieren evitar estar juntos durante la grabación.
+0..infinity: CANTIDAD_PAREJAS;
+
 % Vector que muestra cuales actores deben estar separados en lo posible, debido a que juntos no trabajan tan bien.
 array[int,int] of 1..CANTIDAD_ACTORES: Actores_separados;
 
@@ -87,7 +90,7 @@ constraint forall(a in 1..CANTIDAD_ACTORES) (
 constraint sum(orden_escenas) <= sum(i in 1..CANTIDAD_ESCENAS)(i);
 
 % Restricción: los actores pueden permanecer juntos en el set en todas las escenas a lo máximo.
-constraint forall (t in 1..length(tiempo_juntos)) (
+constraint forall (t in 1..CANTIDAD_PAREJAS) (
   tiempo_juntos[t] >= 0 /\ tiempo_juntos[t] <= duracion_todas_las_escenas
 );
 
