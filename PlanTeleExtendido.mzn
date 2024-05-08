@@ -25,8 +25,8 @@ array[int,int] of 1..length(ACTORES): Actores_separados;
 % Estos son los pesos que se le asignan al costo y tiempo en que algunos actores no deberían estar juntos.
 % c_weight -> este es el peso que se le da al costo
 % t_weight -> este es el peso que se le da al tiempo que comparten los actores que no trabajan bien juntos.
-0..100: c_weight;
-0..100: t_weight;
+0.0..1.0: c_weight;
+0.0..1.0: t_weight;
 
 % ====================================================================================================================
 % Variables
@@ -89,6 +89,10 @@ constraint forall(i in 1..CANTIDAD_ESCENAS-1) (
   )
 );
 
+% Restricción: el orden de las escenas, no puede estar invertido.
+% Esto se traduce en que el array orden_escenas debe ser menor lexicográficamente que su inverso.
+constraint lex_less(orden_escenas, reverse(orden_escenas));
+
 % ====================================================================================================================
 % Funciones auxiliares
 % ====================================================================================================================
@@ -135,7 +139,7 @@ function var int: calcular_costo(1..length(ACTORES): a)
 % ====================================================================================================================
 
 % Representa el costo total de la producción, calculado como la suma de los costos individuales de cada actor. En otras palabras, este es el costo de la solución.
-var int: costo;
+var 0.0..infinity: costo;
 
 % Restringe la variable costo para que sea igual a la suma de los costos individuales de cada actor, calculados mediante la función calcular_costo(a).
 constraint costo = sum(a in 1..length(ACTORES))(calcular_costo(a));
@@ -150,12 +154,18 @@ constraint costo_por_actor = [calcular_costo(a) | a in 1..length(ACTORES)];
 % Estrategia de búsqueda
 % ====================================================================================================================
 
+% El peor tiempo que pueden estar juntos 2 actores: la sumatoria de la duración de cada escena.
+int: duracion_todas_las_escenas = sum(Duracion);
+
+% El peor costo posible: todos los actores deben estar en todas las escenas, por tanto, cobrar por todo ese tiempo.
+int: peor_costo = sum(a in 1..length(ACTORES)) (duracion_todas_las_escenas * Escenas[a, CANTIDAD_ESCENAS+1]);
+
 % Total del tiempo en que permanecen juntos los actores que deberían estar separados.
 var int: tiempo_juntos_total = sum(tiempo_juntos);
 
 % solve minimize costo;
 % solve minimize tiempo_juntos_total;
-solve minimize costo * c_weight + tiempo_juntos_total * t_weight;
+solve minimize costo/peor_costo * c_weight + tiempo_juntos_total/duracion_todas_las_escenas * t_weight;
 % solve satisfy;
 
 % ====================================================================================================================

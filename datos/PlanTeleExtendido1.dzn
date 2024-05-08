@@ -13,6 +13,6 @@ Maximo_tiempo_actores = [5 , 5 , 4 , 4];
 
 Actores_separados = [|3,4|];
 
-c_weight = 90;
+c_weight = 0.9;
 
-t_weight = 10;
+t_weight = 0.1;
