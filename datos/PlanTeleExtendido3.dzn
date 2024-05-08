@@ -1,4 +1,8 @@
+CANTIDAD_ACTORES = 5;
+
 ACTORES = { Actor1 , Actor2 , Actor3 , Actor4, Actor5 };
+
+CANTIDAD_ESCENAS = 5;
 
 Escenas =
 [| 1 , 0 , 1 , 1 , 1 , 10
