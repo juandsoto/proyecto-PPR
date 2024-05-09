@@ -1,4 +1,8 @@
+CANTIDAD_ACTORES = 5;
+
 ACTORES = { Actor1 , Actor2 , Actor3 , Actor4, Actor5 };
+
+CANTIDAD_ESCENAS = 5;
 
 Escenas =
 [| 1 , 0 , 1 , 1 , 1 , 10
@@ -12,4 +16,10 @@ Duracion =
 
 Maximo_tiempo_actores = [0 , 0 , 0 , 0, 0];
 
-Actores_separados = [|3,2|];
+CANTIDAD_PAREJAS = 4;
+
+Actores_separados = [|3,2|5,3|5,1|5,2|];
+
+c_weight = 1.0;
+
+t_weight = 0.0;
