@@ -2,8 +2,8 @@ import { create } from 'zustand';
 import { BasicResult } from '../types';
 
 interface AppStore {
-	dznFile: File | null;
-	setDznFile: (file: File) => void;
+	dznFile: string | null;
+	setDznFile: (file: string) => void;
 	basicResult: BasicResult | null;
 	setBasicResult: (result: BasicResult) => void;
 }

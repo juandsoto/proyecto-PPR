@@ -1,8 +1,10 @@
 import React from 'react';
+import { formatToDzn } from '../../utils';
+import { rtfToTxt } from '../../utils/converter.js';
 
 interface FileInputProps extends React.HTMLProps<HTMLInputElement> {
 	id: string;
-	handleFile: (file: File) => void;
+	handleFile: (file: string) => void;
 }
 
 function FileInput({ id, handleFile, ...props }: FileInputProps) {
@@ -11,7 +13,13 @@ function FileInput({ id, handleFile, ...props }: FileInputProps) {
 		const file = e.target.files![0];
 		if (!file) return;
 
-		handleFile(file);
+		let data: string = await file.text();
+
+		if (file.name.includes('.rtf')) {
+			data = formatToDzn(rtfToTxt(data));
+		}
+		console.log(data);
+		handleFile(data);
 	};
 
 	return (

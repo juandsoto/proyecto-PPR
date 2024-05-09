@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import UploadDzn from './UploadDzn';
+import UploadData from './UploadData';
 import { Button, Select } from './ui';
 import { useAppStore } from '../store/appStore';
 import { Minizinc } from '../Minizinc';
@@ -11,11 +11,8 @@ function Sidebar() {
 	const runModel = async () => {
 		if (!dznFile) return;
 
-		const data: string = await dznFile?.text();
-		console.log(data);
-
 		if (model === 'basic') {
-			const result = await Minizinc.run(data);
+			const result = await Minizinc.run(dznFile);
 			setBasicResult(result);
 			return;
 		}
@@ -26,7 +23,7 @@ function Sidebar() {
 	return (
 		<div className='w-96 py-4 px-4'>
 			<div className="max-w-96">
-				<UploadDzn />
+				<UploadData />
 			</div>
 			{ dznFile && (
 				<div className="mt-4 flex items-end gap-4">

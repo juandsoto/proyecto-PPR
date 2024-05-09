@@ -2,7 +2,7 @@ import React from 'react';
 import { FileInput } from './ui';
 import { useAppStore } from '../store/appStore';
 
-function UploadDzn() {
+function UploadData() {
 	const { setDznFile } = useAppStore();
 
 	return (
@@ -16,4 +16,4 @@ function UploadDzn() {
 	);
 }
 
-export default UploadDzn;
+export default UploadData;
