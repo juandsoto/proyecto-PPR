@@ -7,6 +7,12 @@
 		@apply bg-slate-700 text-white;
 	}
 
+	body {
+		background-image: url('/background.jpg');
+		background-size: cover;
+		background-position: fixed;
+	}
+
 	h1 {
 		@apply text-4xl;
 	}

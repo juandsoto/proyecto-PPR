@@ -18,6 +18,7 @@ function FileInput({ id, handleFile, ...props }: FileInputProps) {
 		if (file.name.includes('.rtf')) {
 			data = formatToDzn(rtfToTxt(data));
 		}
+
 		console.log(data);
 		handleFile(data);
 	};

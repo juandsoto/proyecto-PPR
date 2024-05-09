@@ -34,9 +34,9 @@ function BasicTable({ data }: BasicTableProps) {
 							{ data.orden_escenas.map(escena => (
 								<td key={ `actor ${actor} - escena ${escena - 1}` } className="">
 									{ data.escenas[actor][escena - 1] ? (
-										<div className='size-8 bg-green-500 mx-auto'></div>
+										<div className='size-8 bg-green-500 rounded-md mx-auto'></div>
 									) : (
-										<div className='size-8 bg-red-500 mx-auto'></div>
+										<div className='size-8 bg-red-500 rounded-md mx-auto'></div>
 									) }
 								</td>
 							)) }
