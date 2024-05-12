@@ -18,7 +18,7 @@ enum ACTORES;
 array[1..CANTIDAD_ACTORES, int] of 0..infinity: Escenas;
 
 % Unidades de tiempo que duran las escenas.
-array[1..CANTIDAD_ESCENAS] of 0..infinity: Duracion;
+array[1..CANTIDAD_ESCENAS] of 1..infinity: Duracion;
 
 % ====================================================================================================================
 % Variables
@@ -49,7 +49,7 @@ constraint all_different(orden_escenas);
 % --------------------------------------------------------------------------------------------------------------------
 
 % Restricción: la suma de los indices de las escenas debe ser inferior o igual a la suma de los numeros del 1 hasta la cantidad de escenas.
-constraint sum(orden_escenas) <= sum(i in 1..CANTIDAD_ESCENAS)(i);
+constraint sum(orden_escenas) <= CANTIDAD_ESCENAS * (CANTIDAD_ESCENAS + 1) / 2;
 
 % --------------------------------------------------------------------------------------------------------------------
 % Restricciones de simetría
@@ -118,7 +118,7 @@ constraint costo_por_actor = [calcular_costo(a) | a in 1..CANTIDAD_ACTORES];
 % función objetivo:
 % sum(a in 1..CANTIDAD_ACTORES)(calcular_costo(a))
 
-solve minimize costo;
+% solve minimize costo;
 
 % solve satisfy;
 

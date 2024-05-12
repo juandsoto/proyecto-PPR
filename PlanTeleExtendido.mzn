@@ -18,7 +18,7 @@ enum ACTORES;
 array[1..CANTIDAD_ACTORES, int] of 0..infinity: Escenas;
 
 % Unidades de tiempo que duran las escenas.
-array[1..CANTIDAD_ESCENAS] of 0..infinity: Duracion;
+array[1..CANTIDAD_ESCENAS] of 1..infinity: Duracion;
 
 % Disponibilidad de los actores: este array muestra si los actores definen un máximo limite de tiempo en el que pueden estar en el set:
 % Si Maximo_tiempo_actores[a] = 0 entonces el actor tiene disponible todo el tiempo, es decir, no impone restricciones de tiempo.
@@ -87,7 +87,7 @@ constraint forall(a in 1..CANTIDAD_ACTORES) (
 % --------------------------------------------------------------------------------------------------------------------
 
 % Restricción: la suma de los indices de las escenas debe ser inferior o igual a la suma de los numeros del 1 hasta la cantidad de escenas.
-constraint sum(orden_escenas) <= sum(i in 1..CANTIDAD_ESCENAS)(i);
+constraint sum(orden_escenas) <= CANTIDAD_ESCENAS * (CANTIDAD_ESCENAS + 1) / 2;
 
 % Restricción: los actores pueden permanecer juntos en el set en todas las escenas a lo máximo.
 constraint forall (t in 1..CANTIDAD_PAREJAS) (
@@ -176,7 +176,7 @@ var int: tiempo_juntos_total = sum(tiempo_juntos);
 
 % solve minimize costo;
 % solve minimize tiempo_juntos_total;
-solve minimize ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / duracion_todas_las_escenas ) * t_weight );
+solve minimize ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / ( duracion_todas_las_escenas * CANTIDAD_PAREJAS ) ) * t_weight );
 % solve satisfy;
 
 % ====================================================================================================================
