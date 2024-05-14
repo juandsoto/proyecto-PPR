@@ -1,5 +1,4 @@
 import * as MiniZinc from 'minizinc';
-import { MODEL } from './constants/model';
 
 MiniZinc.init({
 	workerURL: 'http://localhost:5173/node_modules/minizinc/dist/minizinc-worker.js',
@@ -9,14 +8,14 @@ MiniZinc.init({
 	console.log('Ready');
 });
 
-function readModel(data: string) {
+function readModel(data: string, model: string) {
 
-	const model = new MiniZinc.Model();
+	const Model = new MiniZinc.Model();
 
-	model.addDznString(data);
-	model.addFile('model.mzn', MODEL);
+	Model.addDznString(data);
+	Model.addFile('model.mzn', model);
 
-	return model;
+	return Model;
 }
 
 function solveModel(model: MiniZinc.Model) {
@@ -28,12 +27,12 @@ function solveModel(model: MiniZinc.Model) {
 	});
 }
 
-async function run(data: string): Promise<any | null> {
-	let model: MiniZinc.Model;
+async function run(data: string, model: string): Promise<any | null> {
+	let Model: MiniZinc.Model;
 	let result: Awaited<MiniZinc.SolveProgress>;
 	try {
-		model = await readModel(data);
-		result = await solveModel(model);
+		Model = await readModel(data, model);
+		result = await solveModel(Model);
 		console.log(result.solution?.output.json);
 
 		return result.solution?.output.json;

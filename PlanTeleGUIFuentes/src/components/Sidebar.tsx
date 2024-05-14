@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { Minizinc } from '../Minizinc';
+import { BASIC_MODEL } from '../constants/model';
+import useInterval from '../hooks/useInterval';
+import { useAppStore } from '../store/appStore';
+import DownloadData from './DownloadData';
 import UploadData from './UploadData';
 import { Button, Select } from './ui';
-import { useAppStore } from '../store/appStore';
-import { Minizinc } from '../Minizinc';
-import DownloadData from './DownloadData';
-import useInterval from '../hooks/useInterval';
 
 function Sidebar() {
 	const { dznFile, setBasicResult, setIsLoading, isLoading, basicResult } = useAppStore();
@@ -18,7 +19,7 @@ function Sidebar() {
 		execution.startInterval();
 
 		if (model === 'basic') {
-			const result = await Minizinc.run(dznFile);
+			const result = await Minizinc.run(dznFile, BASIC_MODEL);
 			setBasicResult(result);
 			setIsLoading(false);
 		}
