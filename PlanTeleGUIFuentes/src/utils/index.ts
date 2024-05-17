@@ -4,7 +4,6 @@ export function formatToDzn(input: string) {
 	let num_actores = parseInt(keys[0]);
 	let num_actores_iter = num_actores;
 	const num_escenas = parseInt(keys[2]);
-	console.log({ num_escenas });
 
 	const actores = keys[1];
 

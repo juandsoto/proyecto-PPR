@@ -1,11 +1,16 @@
 import * as MiniZinc from 'minizinc';
 
+//@ts-ignore
+const IS_PROD = import.meta.env.PROD;
+
+const BASE_URL = IS_PROD ? 'https://proyecto-ppr.vercel.app' : 'http://localhost:5173';
+
 MiniZinc.init({
-	workerURL: 'http://localhost:5173/node_modules/minizinc/dist/minizinc-worker.js',
-	wasmURL: 'http://localhost:5173/node_modules/minizinc/dist/minizinc.wasm',
-	dataURL: 'http://localhost:5173/node_modules/minizinc/dist/minizinc.data'
+	workerURL: `${BASE_URL}/node_modules/minizinc/dist/minizinc-worker.js`,
+	wasmURL: `${BASE_URL}/node_modules/minizinc/dist/minizinc.wasm`,
+	dataURL: `${BASE_URL}/node_modules/minizinc/dist/minizinc.data`
 }).then(() => {
-	console.log('Ready');
+	console.log('Minizinc worker ready!');
 });
 
 function readModel(data: string, model: string) {
@@ -21,7 +26,7 @@ function readModel(data: string, model: string) {
 function solveModel(model: MiniZinc.Model) {
 	return model.solve({
 		options: {
-			solver: 'coin-bc',
+			solver: 'gecode',
 			'all-solutions': true,
 		}
 	});

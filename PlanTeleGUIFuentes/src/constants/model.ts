@@ -16,7 +16,7 @@ enum ACTORES;
 
 % Matriz para determinar si el actor a participó en la escena i
 % La última columna indica lo que cobra cada actor (en cientos de miles) por cada unidad de tiempo que le toque estar en el estudio.
-array[1..CANTIDAD_ACTORES, int] of 0..infinity: Escenas;
+array[1..CANTIDAD_ACTORES, 1..CANTIDAD_ESCENAS+1] of 0..infinity: Escenas;
 
 % Unidades de tiempo que duran las escenas.
 array[1..CANTIDAD_ESCENAS] of 1..infinity: Duracion;
@@ -110,11 +110,11 @@ function var int: calcular_costo(1..CANTIDAD_ACTORES: a)
 % Funcion objetivo y Estrategia de búsqueda
 % ====================================================================================================================
 
-% Restringe la variable costo para que sea igual a la suma de los costos individuales de cada actor, calculados mediante la función calcular_costo(a).
-constraint costo = sum(a in 1..CANTIDAD_ACTORES)(calcular_costo(a));
-
 % Restringe el array costo_por_actor para que contenga los costos individuales de cada actor, calculados mediante la función calcular_costo(a).
 constraint costo_por_actor = [calcular_costo(a) | a in 1..CANTIDAD_ACTORES];
+
+% Restringe la variable costo para que sea igual a la suma de los costos individuales de cada actor, calculados mediante la función calcular_costo(a).
+constraint costo = sum(a in 1..CANTIDAD_ACTORES)(costo_por_actor[a]);
 
 % función objetivo:
 % sum(a in 1..CANTIDAD_ACTORES)(calcular_costo(a))
