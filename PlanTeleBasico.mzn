@@ -94,12 +94,16 @@ function var -1..CANTIDAD_ESCENAS: ultima_escena(1..CANTIDAD_ACTORES: a, array[1
   
 % Función: Calcula el costo total para el actor a considerando la duración de cada escena en la que participa, multiplicada por la duración de la escena.
 function var int: calcular_costo(1..CANTIDAD_ACTORES: a)
-  = sum(i in 1..CANTIDAD_ESCENAS)(
+  = let {
+    var int: primera_escena = primera_escena(a, orden_escenas);
+    var int: ultima_escena = ultima_escena(a, orden_escenas);
+  }
+  in
+  sum(i in 1..CANTIDAD_ESCENAS)(
 
   if
     Escenas[a,orden_escenas[i]] = 1 \/
-    (i >= primera_escena(a, orden_escenas) /\
-        i <= ultima_escena(a, orden_escenas))
+    (i >= primera_escena /\ i <= ultima_escena)
     then Duracion[orden_escenas[i]]
     else 0
   endif
@@ -118,7 +122,18 @@ constraint costo = sum(a in 1..CANTIDAD_ACTORES)(costo_por_actor[a]);
 % función objetivo:
 % sum(a in 1..CANTIDAD_ACTORES)(calcular_costo(a))
 
-solve minimize costo;
+%solve minimize costo;
+
+%solve :: int_search(orden_escenas, first_fail, indomain_min) minimize costo;
+%Profundidad: 6, Azules-Nodos: 22, Rojo-Fallidos: 21, Verde-Solución factible: 2
+%solve :: int_search(orden_escenas, input_order, indomain_min) minimize costo;
+%Profundidad: 6, Azules-Nodos: 22, Rojo-Fallidos: 21, Verde-Solución factible: 2
+solve :: int_search(orden_escenas, anti_first_fail, indomain_min) minimize costo;
+%Profundidad: 6, Azules-Nodos: 14, Rojo-Fallidos: 13, Verde-Solución factible: 2
+%solve :: int_search(orden_escenas, smallest, indomain_min) minimize costo;
+%Profundidad: 6, Azules-Nodos: 22, Rojo-Fallidos: 21, Verde-Solución factible: 2
+%solve :: int_search(orden_escenas, largest, indomain_min) minimize costo;
+%Profundidad: 6, Azules-Nodos: 22, Rojo-Fallidos: 21, Verde-Solución factible: 2
 
 % solve satisfy;
 
