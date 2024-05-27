@@ -4,7 +4,7 @@ import { useAppStore } from '../store/appStore';
 import { Button } from './ui';
 
 function DownloadData() {
-	const { filename, dznFile, basicResult } = useAppStore();
+	const { filename, dznFile, basicResult, extendedResult } = useAppStore();
 	const file = useDownloadFile();
 
 	return (
@@ -23,7 +23,14 @@ function DownloadData() {
 				className='flex items-center gap-2'
 				variant='outline'
 				onClick={ () => {
-					const result = `Escenas = ${basicResult?.orden_escenas}\nCosto = ${basicResult?.costo}`;
+					let result: string = '';
+
+					if (!!basicResult) {
+						result = `Escenas = ${basicResult?.orden_escenas}\nCosto = ${basicResult?.costo}`;
+					} else {
+						result = `Escenas = ${extendedResult?.orden_escenas}\nCosto = ${extendedResult?.costo}\n\nTiempo Compartido:\n\n${extendedResult?.evitan.map((couple, i) => `${couple[0].e}, ${couple[1].e} = ${extendedResult.tiempo_compartido[i]}`).join('\n')}`;
+					}
+
 					file.download(`${filename}.txt`, result);
 				} }
 			>

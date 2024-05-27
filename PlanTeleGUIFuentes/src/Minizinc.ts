@@ -42,6 +42,8 @@ async function run(data: string, model: string): Promise<any | null> {
 
 		return result.solution?.output.json;
 	} catch (e) {
+		const choseWrongSolver = (e.message as string).includes('must be defined') || (e.message as string).includes('undefined identifier');
+		if (choseWrongSolver) alert('Upss. Tal vez elegiste el solver equivocado');
 		console.error(e);
 	}
 	return null;

@@ -3,7 +3,7 @@ import { FileInput } from './ui';
 import { useAppStore } from '../store/appStore';
 
 function UploadData() {
-	const { setDznFile, setFilename, setBasicResult } = useAppStore();
+	const { setDznFile, setFilename, setBasicResult, setExtendedResult } = useAppStore();
 
 	return (
 		<>
@@ -12,6 +12,7 @@ function UploadData() {
 				id='dzn_input'
 				handleFile={ (name, content) => {
 					setBasicResult(null);
+					setExtendedResult(null);
 					if (!content) {
 						setFilename(null);
 						setDznFile(null);

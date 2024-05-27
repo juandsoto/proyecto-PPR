@@ -30,6 +30,7 @@ function FileInput({ id, handleFile, ...props }: FileInputProps) {
 			{ ...props }
 			type="file"
 			onChange={ onInputChange }
+			onClick={ e => e.currentTarget.value = '' }
 		/>
 	);
 }

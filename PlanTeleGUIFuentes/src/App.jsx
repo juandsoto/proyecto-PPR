@@ -1,8 +1,8 @@
-import { Sidebar, BasicTable } from "./components";
+import { Sidebar, BasicTable, ExtendedTable } from "./components";
 import { useAppStore } from "./store/appStore";
 
 function App() {
-	const { basicResult, isLoading } = useAppStore();
+	const { basicResult, extendedResult, isLoading } = useAppStore();
 
 	return (
 		<div className="flex min-h-screen max-w-screen-2xl mx-auto">
@@ -10,9 +10,13 @@ function App() {
 				<h1>Planificación de ensayos en una telenovela</h1>
 				{ isLoading ? (
 					<p className="mt-12">Generando resultado...</p>
-				) : basicResult && (
+				) : basicResult ? (
 					<div className="mt-12">
 						<BasicTable data={ basicResult } />
+					</div>
+				) : extendedResult && (
+					<div className="mt-12">
+						<ExtendedTable data={ extendedResult } />
 					</div>
 				) }
 			</div>
