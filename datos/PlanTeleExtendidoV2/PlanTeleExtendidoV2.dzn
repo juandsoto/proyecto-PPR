@@ -1,8 +1,8 @@
-N = 4;
+CANTIDAD_ACTORES = 4;
 
 ACTORES = { Actor1 , Actor2 , Actor3 , Actor4 };
 
-M = 4;
+CANTIDAD_ESCENAS = 4;
 
 Escenas =
 [| 1 , 0 , 1 , 1 , 10
@@ -13,13 +13,12 @@ Escenas =
 Duracion =
 [ 2 , 3 , 1 , 2 ];
 
-Disponibilidad = 
-[|Actor1, 5
-|Actor2, 0
-|Actor3, 4
-|Actor4, 4|];
+Maximo_tiempo_actores = [5 , 5 , 4 , 4];
 
-E = 0;
+CANTIDAD_PAREJAS = 0;
 
-Evitar = 
-[];
+Actores_separados = [];
+
+c_weight = 0.9;
+
+t_weight = 0.1;

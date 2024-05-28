@@ -22,6 +22,5 @@ Disponibilidad =
 E = 2;
 
 Evitar =
-%[];
 [|Actor1, Actor2
 |Actor2, Actor3|];
