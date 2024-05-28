@@ -84,7 +84,21 @@ var int: evitar = sum(i in 1..E)(tiempo_compartido[i]);
 %Restricciones
 
 %Las escenas no se pueden repetir
-constraint all_different(orden_escenas);                       
+constraint all_different(orden_escenas);      
+
+% Restricción simetría: si en la escena i actuan los mismos actores que en la escena j, se ordenan ascendentemente en el arreglo orden_escenas.
+constraint forall(i in 1..M-1) (
+  forall(j in i+1..M) (
+    forall(a in ACTORES) (      
+      Escenas[a, orden_escenas[i]] = Escenas[a, orden_escenas[j]]
+    ) -> orden_escenas[i] < orden_escenas[j]
+  )
+);
+ 
+
+% Restricción simetría: el orden de las escenas, no puede estar invertido.
+% Esto se traduce en que el array orden_escenas debe ser menor lexicográficamente que su inverso.
+constraint lex_less(orden_escenas, reverse(orden_escenas));                
 
 %Pone limite a las unidades de tiempo que un actor puede estar en el set de acuerdo al parametro Disponibilidad.
 %Si la disponibilidad es 0, significa que no hay limite de tiempo para el actor
@@ -115,7 +129,9 @@ constraint forall(i in 1..E, j in 1..2) (
   evitan[i,j] = Evitar[i,j]
 );
 
-solve minimize costo + evitar;
+%solve minimize costo + evitar;
+
+solve satisfy;
 
 output [show(orden_escenas)]++["\n\n"]
 ++["Tiempo compartido: \(Evitar[i,1]),\(Evitar[i,2]) = \(tiempo_compartido[i]) \n" | i in 1..E]++["\n"]
