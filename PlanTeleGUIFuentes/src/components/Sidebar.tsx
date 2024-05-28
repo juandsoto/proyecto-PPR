@@ -38,7 +38,7 @@ function Sidebar() {
 	}, [dznFile]);
 
 	return (
-		<div className='w-96 py-4 px-4'>
+		<div className='flex-shrink-0 w-80 py-4 px-4'>
 			<div className="max-w-96">
 				<UploadData />
 			</div>
