@@ -5,15 +5,25 @@
 @layer base {
 	html {
 		@apply bg-black text-white;
-	}
-
-	body {
 		background-image: url('/background.jpg');
 		background-size: cover;
+		background-attachment: fixed;
 		background-position: fixed;
 	}
 
 	h1 {
 		@apply text-4xl;
+	}
+
+	::-webkit-scrollbar {
+		@apply bg-gray-700 w-3 h-3;
+	}
+
+	::-webkit-scrollbar-thumb {
+		@apply bg-gray-500;
+	}
+
+	::-webkit-scrollbar-corner {
+		display: none;
 	}
 }

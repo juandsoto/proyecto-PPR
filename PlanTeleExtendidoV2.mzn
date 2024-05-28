@@ -208,12 +208,3 @@ output ["Costo por actor: \(costo_por_actor)" ++ "\n\n"];
 output ["Tiempo por actor: \(tiempo_consumido_por_actores)" ++ "\n\n"];
 
 output ["Tiempo en que trabajan juntos los actores que se deben separar: " ++ show(tiempo_juntos) ++ "\n\n"];
-
-
-
-
-
-
-
-
-

@@ -6,20 +6,21 @@ M = 4;
 
 Escenas =
 [| 1 , 0 , 1 , 1 , 10
-| 0 , 1 , 0 , 1 , 20
-| 0 , 1 , 1 , 0 , 5
-| 1 , 0 , 0 , 1 , 2|];
+| 1 , 0 , 1 , 0 , 20
+| 0 , 1 , 1 , 1 , 5
+| 1 , 0 , 0 , 1 , 8|];
 
 Duracion =
 [ 2 , 3 , 1 , 2 ];
 
-Disponibilidad = 
-[|Actor1, 5
+Disponibilidad =
+[|Actor1, 0
 |Actor2, 0
-|Actor3, 4
+|Actor3, 0
 |Actor4, 4|];
 
-E = 0;
+E = 2;
 
-Evitar = 
-[];
+Evitar =
+[|Actor1, Actor2
+|Actor2, Actor3|];

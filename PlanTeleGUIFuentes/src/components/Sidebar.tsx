@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Minizinc } from '../Minizinc';
-import { BASIC_MODEL } from '../constants/model';
+import { BASIC_MODEL, EXTENDED_MODEL } from '../constants/model';
 import useInterval from '../hooks/useInterval';
 import { useAppStore } from '../store/appStore';
 import DownloadData from './DownloadData';
@@ -8,20 +8,25 @@ import UploadData from './UploadData';
 import { Button, Select } from './ui';
 
 function Sidebar() {
-	const { dznFile, setBasicResult, setIsLoading, isLoading, basicResult } = useAppStore();
+	const { dznFile, setBasicResult, setIsLoading, isLoading, basicResult, setExtendedResult, extendedResult } = useAppStore();
 	const [model, setModel] = useState<'basic' | 'extended'>('basic');
 	const execution = useInterval();
 
 	const runModel = async () => {
 		if (!dznFile) return;
 		setBasicResult(null);
+		setExtendedResult(null);
 		setIsLoading(true);
 		execution.startInterval();
 
 		if (model === 'basic') {
 			const result = await Minizinc.run(dznFile, BASIC_MODEL);
 			setBasicResult(result);
-			setIsLoading(false);
+		}
+
+		if (model === 'extended') {
+			const result = await Minizinc.run(dznFile, EXTENDED_MODEL);
+			setExtendedResult(result);
 		}
 
 		execution.stopInterval();
@@ -33,7 +38,7 @@ function Sidebar() {
 	}, [dznFile]);
 
 	return (
-		<div className='w-96 py-4 px-4'>
+		<div className='flex-shrink-0 w-80 py-4 px-4'>
 			<div className="max-w-96">
 				<UploadData />
 			</div>
@@ -43,7 +48,7 @@ function Sidebar() {
 						<div className="flex-1">
 							<Select
 								id='models'
-								onSelect={ option => setModel(option.value) }
+								onSelect={ value => setModel(value as React.SetStateAction<"basic" | "extended">) }
 								options={ [
 									{ text: 'Solver Básico', value: 'basic' },
 									{ text: 'Solver Extendido', value: 'extended' },
@@ -65,7 +70,7 @@ function Sidebar() {
 							<span>{ execution.elapsedTime }</span>
 						</div>
 					) }
-					{ basicResult && <DownloadData /> }
+					{ (!!basicResult || !!extendedResult) && <DownloadData /> }
 				</div>
 			) }
 		</div>

@@ -1,8 +1,8 @@
-CANTIDAD_ACTORES = 3;
+N = 3;
 
 ACTORES = { Actor1 , Actor2 , Actor3 };
 
-CANTIDAD_ESCENAS = 3;
+M = 3;
 
 Escenas =
 [| 1 , 0 , 1 , 10

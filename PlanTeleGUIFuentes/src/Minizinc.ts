@@ -40,8 +40,11 @@ async function run(data: string, model: string): Promise<any | null> {
 		result = await solveModel(Model);
 		console.log(result.solution?.output.json);
 
+		if (result.status === 'UNSATISFIABLE') return alert('Insatisfactible. Los datos son inconsistentes y no hay solución');
+
 		return result.solution?.output.json;
 	} catch (e) {
+		alert(e.message);
 		console.error(e);
 	}
 	return null;
