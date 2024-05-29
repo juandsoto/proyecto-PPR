@@ -64,6 +64,10 @@ constraint forall(i in 1..M-1) (
   )
 );
 
+% Restricción simetría: el orden de las escenas, no puede estar invertido.
+% Esto se traduce en que el array orden_escenas debe ser menor lexicográficamente que su inverso.
+constraint lex_less(orden_escenas, reverse(orden_escenas));     
+
 % ====================================================================================================================
 % Funciones auxiliares
 % ====================================================================================================================
