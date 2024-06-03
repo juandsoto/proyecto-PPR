@@ -14,18 +14,18 @@ Escenas =
 Duracion =
 [ 2 , 3 , 1 , 2, 5 ];
 
-Disponibilidad = 
-[|Actor1, 0
-|Actor2, 0
-|Actor3, 0
-|Actor4, 0
-|Actor5, 0|];
+Maximo_tiempo_actores = 
+[0, 0, 0, 0, 0];
 
 E = 5;
 
-Evitar = 
-[|Actor3, Actor2
-|Actor5, Actor3
-|Actor5, Actor1
-|Actor4, Actor2
-|Actor5, Actor2|];
+Actores_separados = 
+[|3, 2
+|5, 3
+|5, 1
+|4, 2
+|5, 2|];
+
+c_weight = 1.0;
+
+t_weight = 0.0;
