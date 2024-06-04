@@ -35,7 +35,7 @@ function App() {
 											<span>{ couple[0].e }</span>
 											<span className='mx-2 text-sm'>evita a</span>
 											<span>{ couple[1].e }</span>
-											<span className='ml-2 text-sm'>| comparten { extendedResult.tiempo_compartido[i] } { extendedResult.tiempo_compartido[i] === 1 ? 'hora' : 'horas' } en set</span>
+											<span className='ml-2 text-sm'>| comparten { extendedResult.tiempo_juntos[i] } { extendedResult.tiempo_juntos[i] === 1 ? 'hora' : 'horas' } en set</span>
 										</p>
 									)) }
 								</div>

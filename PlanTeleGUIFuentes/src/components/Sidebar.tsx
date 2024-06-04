@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Minizinc } from '../Minizinc';
-import { BASIC_MODEL, EXTENDED_MODEL } from '../constants/model';
+import { BASIC_MODEL, EXTENDED_MODEL, EXTENDED_MODEL_V2 } from '../constants/model';
 import useInterval from '../hooks/useInterval';
 import { useAppStore } from '../store/appStore';
 import DownloadData from './DownloadData';
 import UploadData from './UploadData';
 import { Button, Select } from './ui';
+import NumberInput from './ui/NumberInput';
+import { replaceWeights } from '../utils';
 
 function Sidebar() {
 	const { dznFile, setBasicResult, setIsLoading, isLoading, basicResult, setExtendedResult, extendedResult } = useAppStore();
 	const [model, setModel] = useState<'basic' | 'extended'>('basic');
+	const [weights, setWeights] = useState<{ cost: string, evitar: string; }>({ cost: '1.0', evitar: '1.0' });
 	const execution = useInterval();
 
 	const runModel = async () => {
@@ -19,13 +22,18 @@ function Sidebar() {
 		setIsLoading(true);
 		execution.startInterval();
 
+		const dzn: string = replaceWeights(dznFile, weights.cost, weights.evitar);
+
+		console.log(dzn);
+
+
 		if (model === 'basic') {
-			const result = await Minizinc.run(dznFile, BASIC_MODEL);
+			const result = await Minizinc.run(dzn, BASIC_MODEL);
 			setBasicResult(result);
 		}
 
 		if (model === 'extended') {
-			const result = await Minizinc.run(dznFile, EXTENDED_MODEL);
+			const result = await Minizinc.run(dzn, EXTENDED_MODEL);
 			setExtendedResult(result);
 		}
 
@@ -50,8 +58,8 @@ function Sidebar() {
 								id='models'
 								onSelect={ value => setModel(value as React.SetStateAction<"basic" | "extended">) }
 								options={ [
-									{ text: 'Solver Básico', value: 'basic' },
-									{ text: 'Solver Extendido', value: 'extended' },
+									{ text: 'Modelo Básico', value: 'basic' },
+									{ text: 'Modelo Extendido', value: 'extended' },
 								] }
 							/>
 						</div>
@@ -63,6 +71,14 @@ function Sidebar() {
 								</>
 							) : "Ejecutar" }
 						</Button>
+					</div>
+					<div className="flex gap-4 justify-center">
+						<NumberInput label="Peso de costo" value={ weights.cost } onChange={ (value) => {
+							setWeights(prev => ({ ...prev, cost: value }));
+						} } />
+						<NumberInput label="Peso de evitar" value={ weights.evitar } onChange={ (value) => {
+							setWeights(prev => ({ ...prev, evitar: value }));
+						} } />
 					</div>
 					{ execution.hasStarted && (
 						<div className='space-x-4 text-right'>

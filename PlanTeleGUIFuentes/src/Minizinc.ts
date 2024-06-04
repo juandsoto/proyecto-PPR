@@ -26,7 +26,7 @@ function readModel(data: string, model: string) {
 function solveModel(model: MiniZinc.Model) {
 	return model.solve({
 		options: {
-			solver: 'gecode',
+			solver: 'coin-bc',
 			'all-solutions': true,
 		}
 	});

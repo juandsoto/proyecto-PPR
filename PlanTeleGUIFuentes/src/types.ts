@@ -20,6 +20,6 @@ export interface ExtendedResult {
 	duracion: number[];
 	costo_hora: number[];
 	disponibilidad: number[];
-	tiempo_compartido: number[];
+	tiempo_juntos: number[];
 	evitan: Array<[Actor, Actor]>;
 }

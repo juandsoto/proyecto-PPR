@@ -51,6 +51,8 @@ var 0.0..infinity: costo;
 array[1..N] of var int: costo_por_actor;
 array[1..E] of var int: tiempo_juntos;
 
+int: numero_parejas = if E = 0 then 1 else E endif;
+
 % array que muestra el tiempo en que permanecen juntos los autores que deberían estar separados.
 constraint tiempo_juntos = [ let { 
   % Recuperamos los indices de los actores.
@@ -81,7 +83,7 @@ constraint all_different(orden_escenas);
 constraint forall(a in 1..N) (
   Maximo_tiempo_actores[a] > 0 /\ primera_escena(a, orden_escenas) != -1 -> 
   sum(i in 1..M where i >= primera_escena(a, orden_escenas) /\ i <= ultima_escena(a, orden_escenas))(
-  Duracion[orden_escenas[i]]) <= Maximo_tiempo_actores[a]
+    Duracion[orden_escenas[i]]) <= Maximo_tiempo_actores[a]
 );
 
 % --------------------------------------------------------------------------------------------------------------------
@@ -178,7 +180,7 @@ var int: tiempo_juntos_total = sum(tiempo_juntos);
 
 % solve minimize costo;
 % solve minimize tiempo_juntos_total;
-solve minimize ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / ( duracion_todas_las_escenas * E ) ) * t_weight );
+solve minimize ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / ( duracion_todas_las_escenas * numero_parejas ) ) * t_weight );
 % solve satisfy;
 
 % ====================================================================================================================

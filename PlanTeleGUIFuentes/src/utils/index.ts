@@ -67,5 +67,16 @@ export function formatToDzn(input: string) {
 		E = ${E};
 		
 		Evitar =
-		[${evitar}|];`;
+		[${evitar}|];
+		
+		c_weight = 1.0;
+
+		t_weight = 1.0;`;
+}
+
+export function replaceWeights(dzn: string, cost: string, evitar: string) {
+	const costRegexp = /c_weight = .+?;/;
+	const evitarRegexp = /t_weight = .+?;/;
+
+	return dzn.replace(costRegexp, `c_weight = ${cost};`).replace(evitarRegexp, `t_weight = ${evitar};`);
 }

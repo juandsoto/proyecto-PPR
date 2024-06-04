@@ -23,4 +23,4 @@ Actores_separados =
 
 c_weight = 1.0;
 
-t_weight = 0.0;
+t_weight = 0.7;

@@ -28,7 +28,7 @@ function DownloadData() {
 					if (!!basicResult) {
 						result = `Escenas = ${basicResult?.orden_escenas}\nCosto = ${basicResult?.costo}`;
 					} else {
-						result = `Escenas = ${extendedResult?.orden_escenas}\nCosto = ${extendedResult?.costo}\n\nTiempo Compartido:\n\n${extendedResult?.evitan.map((couple, i) => `${couple[0].e}, ${couple[1].e} = ${extendedResult.tiempo_compartido[i]}`).join('\n')}`;
+						result = `Escenas = ${extendedResult?.orden_escenas}\nCosto = ${extendedResult?.costo}\n\nTiempo Compartido:\n\n${extendedResult?.evitan.map((couple, i) => `${couple[0].e}, ${couple[1].e} = ${extendedResult.tiempo_juntos[i]}`).join('\n')}`;
 					}
 
 					file.download(`${filename}.txt`, result);
