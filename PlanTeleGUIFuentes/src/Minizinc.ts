@@ -26,7 +26,7 @@ function readModel(data: string, model: string) {
 function solveModel(model: MiniZinc.Model) {
 	return model.solve({
 		options: {
-			solver: 'coin-bc',
+			solver: 'HiGHS',
 			'all-solutions': true,
 		}
 	});

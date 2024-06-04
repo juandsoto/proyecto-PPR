@@ -72,7 +72,7 @@ function ExtendedTable({ data }: ExtendedTableProps) {
 						</th>
 						{ Array.from({ length: data.orden_escenas.length + 2 }).map((_, i) => <td key={ `duracion escena ${i + 1}` } className="px-6 py-4" />) }
 						<td className="whitespace-nowrap px-6 py-4 text-black font-bold text-lg bg-yellow-500 rounded-lg">
-							Costo { data.costo }
+							Costo { data.costo.toFixed(2) }
 						</td>
 					</tr>
 				</tbody>

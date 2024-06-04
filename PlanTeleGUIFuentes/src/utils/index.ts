@@ -32,19 +32,17 @@ export function formatToDzn(input: string) {
 	}
 
 	const d = keys[index].split(',');
-	const a = actores.split(',');
-	let disponibilidad = '';
-	for (let i = 0; i < d.length; i++) {
-		disponibilidad += i === d.length - 1 ? `|${a[i]},${d[i]}` : `|${a[i]},${d[i]}\n`;
-	}
 
 	index++;
 	const E = parseInt(keys[index]);
 	let E_iter = E;
 	index++;
 	let evitar = '';
+	const actores_array = actores.split(',');
 	while (E_iter > 0) {
-		evitar += E_iter === 1 ? `|${keys[index]}` : `|${keys[index]}\n`;
+		const [a1, a2] = keys[index].split(',');
+		const [index1, index2] = [actores_array.indexOf(a1) + 1, actores_array.indexOf(a2) + 1];
+		evitar += E_iter === 1 ? `|${index1},${index2}` : `|${index1},${index2}\n`;
 		index++;
 		E_iter--;
 	}
@@ -61,12 +59,12 @@ export function formatToDzn(input: string) {
 		Duracion =
 		[ ${duracion} ];
 		
-		Disponibilidad =
-		[${disponibilidad}|];
+		Maximo_tiempo_actores =
+		[${d}];
 		
 		E = ${E};
 		
-		Evitar =
+		Actores_separados =
 		[${evitar}|];
 		
 		c_weight = 1.0;

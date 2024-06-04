@@ -72,14 +72,16 @@ function Sidebar() {
 							) : "Ejecutar" }
 						</Button>
 					</div>
-					<div className="flex gap-4 justify-center">
-						<NumberInput label="Peso de costo" value={ weights.cost } onChange={ (value) => {
-							setWeights(prev => ({ ...prev, cost: value }));
-						} } />
-						<NumberInput label="Peso de evitar" value={ weights.evitar } onChange={ (value) => {
-							setWeights(prev => ({ ...prev, evitar: value }));
-						} } />
-					</div>
+					{ model === 'extended' && (
+						<div className="flex gap-4 justify-center">
+							<NumberInput label="Peso de costo" value={ weights.cost } onChange={ (value) => {
+								setWeights(prev => ({ ...prev, cost: value }));
+							} } />
+							<NumberInput label="Peso de evitar" value={ weights.evitar } onChange={ (value) => {
+								setWeights(prev => ({ ...prev, evitar: value }));
+							} } />
+						</div>
+					) }
 					{ execution.hasStarted && (
 						<div className='space-x-4 text-right'>
 							<span>Tiempo transcurrido:</span>
