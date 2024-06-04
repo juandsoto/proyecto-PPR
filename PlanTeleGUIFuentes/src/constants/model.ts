@@ -335,12 +335,15 @@ int: peor_costo = sum(a in 1..N) (duracion_todas_las_escenas * Escenas[a, M+1]);
 var int: tiempo_juntos_total = sum(tiempo_juntos);
 
 % Función objetivo:
-% ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / duracion_todas_las_escenas ) * t_weight );
+var float: objetivo = ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / ( duracion_todas_las_escenas * numero_parejas ) ) * t_weight );
 
-% solve minimize costo;
-% solve minimize tiempo_juntos_total;
-solve minimize ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / ( duracion_todas_las_escenas * numero_parejas ) ) * t_weight );
-% solve satisfy;
+solve :: int_search(orden_escenas, first_fail, indomain_min) minimize objetivo;
+%solve :: int_search(orden_escenas, input_order, indomain_min) minimize objetivo;
+%solve :: int_search(orden_escenas, anti_first_fail, indomain_min) minimize objetivo;
+%solve :: int_search(orden_escenas, smallest, indomain_min) minimize objetivo;
+%solve :: int_search(orden_escenas, largest, indomain_min) minimize objetivo;
+
+% solve satisfy;;
 
 % ====================================================================================================================
 % Salida
@@ -369,7 +372,7 @@ constraint forall(i in 1..E, j in 1..2) (
 
 % Arreglo que muestra cuanto tiempo estuvieron en el set los actores.
 array[1..N] of var 0..sum(Duracion): tiempo_consumido_por_actores = [
-  sum(i in 1..M where i >= primera_escena(a, orden_escenas) /\\ i <= ultima_escena(a, orden_escenas) /\\ Escenas[a, orden_escenas[i]] = 1)(Duracion[orden_escenas[i]]) | a in 1..N
+  sum(i in 1..M where i >= primera_escena(a, orden_escenas) /\\ i <= ultima_escena(a, orden_escenas))(Duracion[orden_escenas[i]]) | a in 1..N
 ];
 `;
 
