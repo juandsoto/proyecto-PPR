@@ -65,7 +65,7 @@ export function formatToDzn(input: string) {
 		E = ${E};
 		
 		Actores_separados =
-		[${evitar}|];
+		[${evitar}${evitar.length === 0 ? '' : '|'}];
 		
 		c_weight = 1.0;
 
