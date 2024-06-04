@@ -79,7 +79,7 @@ constraint all_different(orden_escenas);
 % Restricción: si el actor a es una estrella y exige un limite de tiempo para quedarse en el set, dicho limite hay que respetarselo.
 constraint forall(a in 1..N) (
   Maximo_tiempo_actores[a] > 0 /\ primera_escena(a, orden_escenas) != -1 -> 
-  sum(i in 1..M where i >= primera_escena(a, orden_escenas) /\ i <= ultima_escena(a, orden_escenas) /\ Escenas[a, orden_escenas[i]] = 1)(Duracion[orden_escenas[i]]) <= Maximo_tiempo_actores[a]
+  sum(i in 1..M where i >= primera_escena(a, orden_escenas) /\ i <= ultima_escena(a, orden_escenas))(Duracion[orden_escenas[i]]) <= Maximo_tiempo_actores[a]
 );
 
 % --------------------------------------------------------------------------------------------------------------------
@@ -198,7 +198,7 @@ constraint forall(i in 1..N, j in 1..M) (
 
 % Arreglo que muestra cuanto tiempo estuvieron en el set los actores.
 array[1..N] of var 0..sum(Duracion): tiempo_consumido_por_actores = [
-  sum(i in 1..M where i >= primera_escena(a, orden_escenas) /\ i <= ultima_escena(a, orden_escenas) /\ Escenas[a, orden_escenas[i]] = 1)(Duracion[orden_escenas[i]]) | a in 1..N
+  sum(i in 1..M where i >= primera_escena(a, orden_escenas) /\ i <= ultima_escena(a, orden_escenas))(Duracion[orden_escenas[i]]) | a in 1..N
 ];
 
 output ["ESCENAS = \(orden_escenas)" ++ "\n\n" ++ "COSTO = \(costo)" ++ "\n\n"];
