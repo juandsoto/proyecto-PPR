@@ -172,11 +172,13 @@ int: peor_costo = sum(a in 1..N) (duracion_todas_las_escenas * Escenas[a, M+1]);
 var int: tiempo_juntos_total = sum(tiempo_juntos);
 
 % Función objetivo:
-% ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / duracion_todas_las_escenas ) * t_weight );
+var float: objetivo = ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / ( duracion_todas_las_escenas * E ) ) * t_weight );
 
-% solve minimize costo;
-% solve minimize tiempo_juntos_total;
-solve minimize ( ( costo / peor_costo ) * c_weight ) + ( ( tiempo_juntos_total / ( duracion_todas_las_escenas * E ) ) * t_weight );
+solve :: int_search(orden_escenas, first_fail, indomain_min) minimize objetivo;
+% solve :: int_search(orden_escenas, input_order, indomain_min) minimize objetivo;
+% solve :: int_search(orden_escenas, anti_first_fail, indomain_min) minimize objetivo;
+% solve :: int_search(orden_escenas, smallest, indomain_min) minimize objetivo;
+% solve :: int_search(orden_escenas, largest, indomain_min) minimize objetivo;
 % solve satisfy;
 
 % ====================================================================================================================
